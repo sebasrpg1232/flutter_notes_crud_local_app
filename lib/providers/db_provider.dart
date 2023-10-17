@@ -5,6 +5,8 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:path/path.dart';
 
+import '../models/note_model.dart';
+
 class DBProvider {
   static Database? _database;
   static final DBProvider db = DBProvider._();
@@ -45,5 +47,30 @@ class DBProvider {
 ''');
       },
     );
+  }
+
+  Future<int> newNoteRaw(Note note) async {
+    final int? id = note.id;
+    final String title = note.title;
+    final String description = note.description;
+
+    final db =
+        await database; //Recibimos instancia de base de datos para trabajar con ella
+
+    final int res = await db.rawInsert('''
+
+      INSERT INTO notes (id, title, description) VALUES ($id, "$title", "$description")
+
+''');
+    print(res);
+    return res;
+  }
+
+  Future<int> newNote(Note note) async {
+    final db = await database;
+
+    final int res = await db.insert("notes", note.toJson());
+
+    return res;
   }
 }

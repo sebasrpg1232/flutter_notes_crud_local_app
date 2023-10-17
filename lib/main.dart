@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes_crud_local_app/models/note_model.dart';
 import 'package:notes_crud_local_app/providers/db_provider.dart';
 
 /**
@@ -22,6 +23,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DBProvider.db.database;
+
+    final tempNote = Note(
+        id: null,
+        description:
+            "Estoy muy mal en POO de coquito. Debo estudiar. Merezco .5",
+        title: "Aprender de clases de Dart Urgente con Insert!");
+
+    //DBProvider.db.newNoteRaw(tempNote);
+    DBProvider.db.newNote(tempNote);
 
     return MaterialApp(
       title: 'Flutter Demo',

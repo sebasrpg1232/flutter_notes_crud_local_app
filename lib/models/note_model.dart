@@ -9,12 +9,12 @@ Note noteFromJson(String str) => Note.fromJson(json.decode(str));
 String noteToJson(Note data) => json.encode(data.toJson());
 
 class Note {
-  int id;
+  int? id;
   String title;
   String description;
 
   Note({
-    required this.id,
+    this.id,
     required this.title,
     required this.description,
   });
