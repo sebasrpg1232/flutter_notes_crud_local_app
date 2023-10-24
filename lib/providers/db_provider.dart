@@ -73,4 +73,44 @@ class DBProvider {
 
     return res;
   }
+
+  //Obtener un registro por id
+  Future<Note?> getNoteById(int id) async {
+    final Database? db = await database;
+
+    //usando Query para construir la consulta, con where y argumentos posicionales (whereArgs)
+    final res = await db!.query('notes', where: 'id = ?', whereArgs: [id]);
+    print(res);
+    //Preguntamos si trae algun dato. Si lo hace
+    return res.isNotEmpty ? Note.fromJson(res.first) : null;
+  }
+
+  Future<List<Note>> getAllNotes() async {
+    final Database? db = await database;
+    final res = await db!.query('notes');
+    //Transformamos con la funcion map instancias de nuestro modelo. Si no existen registros, devolvemos una lista vacia
+    return res.isNotEmpty ? res.map((n) => Note.fromJson(n)).toList() : [];
+  }
+
+  Future<int> updateNote(Note note) async {
+    final Database? db = await database;
+    //con updates, se usa el nombre de la tabla, seguido de los valores en formato de Mapa, seguido del where con parametros posicionales y los argumentos finales
+    final res = await db!
+        .update('notes', note.toJson(), where: 'id = ?', whereArgs: [note.id]);
+    return res;
+  }
+
+  Future<int> deleteNote(int id) async {
+    final Database? db = await database;
+    final int res = await db!.delete('notes', where: 'id = ?', whereArgs: [id]);
+    return res;
+  }
+
+  Future<int> deleteAllNotes() async {
+    final Database? db = await database;
+    final res = await db!.rawDelete('''
+      DELETE FROM notes    
+    ''');
+    return res;
+  }
 }

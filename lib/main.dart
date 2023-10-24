@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:notes_crud_local_app/models/note_model.dart';
+import 'package:notes_crud_local_app/providers/actual_option_provider.dart';
 import 'package:notes_crud_local_app/providers/db_provider.dart';
+import 'package:notes_crud_local_app/providers/notes_provider.dart';
+import 'package:notes_crud_local_app/screens/home_screen.dart';
+import 'package:provider/provider.dart';
 
 /**
- * 1. Instalar sqflite, path_provider, provider (X)
- * 2. Crear el modelo de Notas (Quicktype.io) (X)
- * 3. Crear el provider de la BD
- * 4. Crear archivo de bd
- * 4. Crear metodos para gestionar datos
  * 
- * 
+ * 1. Instalar sqflite, path_provider, provider
+ * 2. Crear la carpeta "models"
+ * 3. Generar el modelo de Notes usando Quicktype.io
+ * 3. Crear la carpeta "providers"
+ * 4. Crear el archivo "db_provider.dart", para el manejo de la bd
+ * 5. Crear la funcion initDB para crear el archivo de la base de datos
+ * 6. Acceder a android studio para buscar el archivo Notes.db en la ruta generada
+ * desde data/com.example.notes en "View->Tool Windos->Device Explorer"
+ * 7. Ir a View->Tool Windows-> App Inspection en android studio para revisar la base de datos
+ * 8. Crear metodo de creacion de registro
  */
 
 void main() {
@@ -24,18 +31,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     DBProvider.db.database;
 
-    final tempNote = Note(
-        id: null,
-        description:
-            "Estoy muy mal en POO de coquito. Debo estudiar. Merezco .5",
-        title: "Aprender de clases de Dart Urgente con Insert!");
-
-    //DBProvider.db.newNoteRaw(tempNote);
-    DBProvider.db.newNote(tempNote);
-
-    return MaterialApp(
-      title: 'Flutter Demo',
-      home: Scaffold(body: Center(child: Text('Hola'))),
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => ActualOptionProvider()),
+          ChangeNotifierProvider(create: (_) => NotesProvider())
+        ],
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Demo',
+            initialRoute: "main",
+            routes: {'main': (_) => HomeScreen()}));
   }
 }
