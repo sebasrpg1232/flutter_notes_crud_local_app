@@ -26,7 +26,7 @@ class NotesProvider extends ChangeNotifier {
     return formKey.currentState?.validate() ?? false;
   }
 
-  Future<Note> addNote() async {
+  addNote() async {
     final Note note = Note(title: title, description: description);
 
     final id = await DBProvider.db.newNote(note);
@@ -36,8 +36,6 @@ class NotesProvider extends ChangeNotifier {
     notes.add(note);
 
     notifyListeners();
-
-    return note;
   }
 
   loadNotes() async {
@@ -47,25 +45,28 @@ class NotesProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateNote()async{
-    final note = Note(id:id, title: title, description: description);
+  updateNote() async {
+    final note = Note(id: id, title: title, description: description);
     final res = await DBProvider.db.updateNote(note);
     print("Id actualizado: $res");
     loadNotes();
   }
 
-  assignDataWithNote(Note note){
+  deleteNoteById(int id) async {
+    final res = await DBProvider.db.deleteNote(id);
+    loadNotes();
+  }
+
+  assignDataWithNote(Note note) {
     id = note.id;
     title = note.title;
     description = note.description;
-
   }
 
-  resetNoteData(){
+  resetNoteData() {
     id = null;
     title = '';
     description = '';
     createOrUpdate = 'create';
   }
-
 }

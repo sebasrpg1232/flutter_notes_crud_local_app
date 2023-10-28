@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes_crud_local_app/providers/notes_provider.dart';
 import 'package:notes_crud_local_app/screens/create_note_screen.dart';
 import 'package:notes_crud_local_app/screens/list_notes_screen.dart';
 import 'package:provider/provider.dart';

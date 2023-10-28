@@ -14,6 +14,39 @@ class ListNotesScreen extends StatelessWidget {
 }
 
 class _ListNotes extends StatelessWidget {
+  void displayDialog(
+      BuildContext context, NotesProvider notesProvider, int id) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            elevation: 5,
+            title: const Text('Alerta!'),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusDirectional.circular(10)),
+            content: const Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('¿Quiere eliminar definitivamente el registro?'),
+                SizedBox(height: 10),
+              ],
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancelar')),
+              TextButton(
+                  onPressed: () {
+                    notesProvider.deleteNoteById(id);
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Ok')),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     NotesProvider notesProvider = Provider.of<NotesProvider>(context);
@@ -28,14 +61,20 @@ class _ListNotes extends StatelessWidget {
         subtitle: Text(notes[index].id.toString()),
         trailing: PopupMenuButton(
           // icon: Icon(Icons.fire_extinguisher),
-          onSelected: (int i){
+          onSelected: (int i) {
+            if (i == 0) {
+              notesProvider.createOrUpdate = "update";
               notesProvider.assignDataWithNote(notes[index]);
-              Provider.of<ActualOptionProvider>(context, listen: false).selectedOption = 1;
+              Provider.of<ActualOptionProvider>(context, listen: false)
+                  .selectedOption = 1;
+              return;
+            }
+
+            displayDialog(context, notesProvider, notes[index].id!);
           },
           itemBuilder: (context) => [
-            PopupMenuItem(value:0, child: Text('Actualizar')
-            ),
-            PopupMenuItem(value:1, child: Text('Eliminar'))
+            const PopupMenuItem(value: 0, child: Text('Actualizar')),
+            const PopupMenuItem(value: 1, child: Text('Eliminar'))
           ],
         ),
       ),

@@ -16,9 +16,10 @@ class CreateNoteScreen extends StatelessWidget {
 class _CreateForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final notesProvider = Provider.of<NotesProvider>(context);
-    return Container(
-        child: Form(
+    final NotesProvider notesProvider = Provider.of<NotesProvider>(context);
+    final ActualOptionProvider actualOptionProvider =
+        Provider.of<ActualOptionProvider>(context, listen: false);
+    return Form(
       key: notesProvider.formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
@@ -37,7 +38,7 @@ class _CreateForm extends StatelessWidget {
               return value != '' ? null : 'El campo no debe estar vacío';
             },
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           TextFormField(
             maxLines: 10,
             autocorrect: false,
@@ -52,38 +53,40 @@ class _CreateForm extends StatelessWidget {
               return (value != null) ? null : 'El campo no puede estar vacío';
             },
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           MaterialButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              disabledColor: Colors.grey,
-              elevation: 0,
-              color: Colors.deepPurple,
-              child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                  child: Text(
-                    notesProvider.isLoading ? 'Espere' : 'Ingresar',
-                    style: TextStyle(color: Colors.white),
-                  )),
-              onPressed: notesProvider.isLoading
-                  ? null
-                  : () async {
-                      //Quitar teclado al terminar
-                      FocusScope.of(context).unfocus();
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            disabledColor: Colors.grey,
+            elevation: 0,
+            color: Colors.deepPurple,
+            onPressed: notesProvider.isLoading
+                ? null
+                : () {
+                    //Quitar teclado al terminar
+                    FocusScope.of(context).unfocus();
 
-                      if (!notesProvider.isValidForm()) return;
+                    if (!notesProvider.isValidForm()) return;
 
-                      if(notesProvider.createOrUpdate == 'create'){
-                        await notesProvider.addNote();
-                      }else{
-                        await notesProvider.updateNote();
-                      }
-
-                      notesProvider.isLoading = false;
-                      Provider.of<ActualOptionProvider>(context, listen: false).selectedOption = 0;
-                    })
+                    if (notesProvider.createOrUpdate == 'create') {
+                      notesProvider.addNote();
+                    } else {
+                      notesProvider.updateNote();
+                    }
+                    notesProvider.resetNoteData();
+                    notesProvider.isLoading = false;
+                    actualOptionProvider.selectedOption = 0;
+                  },
+            child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                child: Text(
+                  notesProvider.isLoading ? 'Espere' : 'Ingresar',
+                  style: const TextStyle(color: Colors.white),
+                )),
+          )
         ],
       ),
-    ));
+    );
   }
 }
