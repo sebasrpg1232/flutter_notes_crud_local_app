@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes_crud_local_app/providers/actual_option_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/notes_provider.dart';
@@ -25,6 +26,7 @@ class _CreateForm extends StatelessWidget {
           TextFormField(
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
+            initialValue: notesProvider.title,
             decoration: const InputDecoration(
                 hintText: 'Construir Apps',
                 labelText: 'Titulo',
@@ -39,6 +41,7 @@ class _CreateForm extends StatelessWidget {
           TextFormField(
             maxLines: 10,
             autocorrect: false,
+            initialValue: notesProvider.description,
             // keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
               hintText: 'Aprender sobre Dart...',
@@ -70,9 +73,14 @@ class _CreateForm extends StatelessWidget {
 
                       if (!notesProvider.isValidForm()) return;
 
-                      notesProvider.addNote();
+                      if(notesProvider.createOrUpdate == 'create'){
+                        await notesProvider.addNote();
+                      }else{
+                        await notesProvider.updateNote();
+                      }
 
                       notesProvider.isLoading = false;
+                      Provider.of<ActualOptionProvider>(context, listen: false).selectedOption = 0;
                     })
         ],
       ),

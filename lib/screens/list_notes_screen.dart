@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes_crud_local_app/providers/actual_option_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/notes_provider.dart';
@@ -25,7 +26,18 @@ class _ListNotes extends StatelessWidget {
         leading: const Icon(Icons.note),
         title: Text(notes[index].title),
         subtitle: Text(notes[index].id.toString()),
-        trailing: const Icon(Icons.arrow_forward_ios_sharp),
+        trailing: PopupMenuButton(
+          // icon: Icon(Icons.fire_extinguisher),
+          onSelected: (int i){
+              notesProvider.assignDataWithNote(notes[index]);
+              Provider.of<ActualOptionProvider>(context, listen: false).selectedOption = 1;
+          },
+          itemBuilder: (context) => [
+            PopupMenuItem(value:0, child: Text('Actualizar')
+            ),
+            PopupMenuItem(value:1, child: Text('Eliminar'))
+          ],
+        ),
       ),
     );
   }

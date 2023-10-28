@@ -6,6 +6,8 @@ import 'db_provider.dart';
 class NotesProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  String createOrUpdate = 'create';
+  int? id;
   String title = '';
   String description = '';
 
@@ -44,4 +46,26 @@ class NotesProvider extends ChangeNotifier {
     this.notes = [...notes];
     notifyListeners();
   }
+
+  updateNote()async{
+    final note = Note(id:id, title: title, description: description);
+    final res = await DBProvider.db.updateNote(note);
+    print("Id actualizado: $res");
+    loadNotes();
+  }
+
+  assignDataWithNote(Note note){
+    id = note.id;
+    title = note.title;
+    description = note.description;
+
+  }
+
+  resetNoteData(){
+    id = null;
+    title = '';
+    description = '';
+    createOrUpdate = 'create';
+  }
+
 }
