@@ -6,6 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 import '../models/note_model.dart';
+import '../models/student_model.dart';
 
 class DBProvider {
   static Database? _database;
@@ -26,7 +27,7 @@ class DBProvider {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
 
     //Armamos la url donde quedará la base de datos
-    final path = join(documentsDirectory.path, 'NotesDB.db');
+    final path = join(documentsDirectory.path, 'StudentsDB.db');
 
     //Imprimos ruta
     print(path);
@@ -42,7 +43,13 @@ class DBProvider {
           id INTEGER PRIMARY KEY,
           title TEXT,
           description TEXT
-        )
+        );
+        
+        Create Table students(
+        id int primary key,
+        name text,
+        age int
+        );
 
 ''');
       },
@@ -110,6 +117,72 @@ class DBProvider {
     final Database db = await database;
     final res = await db.rawDelete('''
       DELETE FROM notes    
+    ''');
+    return res;
+  }
+
+
+  Future<int> newStudentRaw(Student student) async {
+    final int id = student.id;
+    final String name = student.name;
+    final int age = student.age;
+
+    final db =
+    await database; //Recibimos instancia de base de datos para trabajar con ella
+
+    final int res = await db.rawInsert('''
+
+      INSERT INTO notes (id, title, description) VALUES ($id, "$name", "$age")
+
+''');
+    print(res);
+    return res;
+  }
+
+  Future<int> newStudent(Student student) async {
+    final db = await database;
+
+    final int res = await db.insert("students", student.toJson());
+
+    return res;
+  }
+
+  //Obtener un registro por id
+  Future<Student?> getStudentById(int id) async {
+    final Database db = await database;
+
+    //usando Query para construir la consulta, con where y argumentos posicionales (whereArgs)
+    final res = await db.query('students', where: 'id = ?', whereArgs: [id]);
+    print(res);
+    //Preguntamos si trae algun dato. Si lo hace
+    return res.isNotEmpty ? Student.fromJson(res.first) : null;
+  }
+
+  Future<List<Student>> getAllStudents() async {
+    final Database? db = await database;
+    final res = await db!.query('students');
+    //Transformamos con la funcion map instancias de nuestro modelo. Si no existen registros, devolvemos una lista vacia
+    return res.isNotEmpty ? res.map((n) => Student.fromJson(n)).toList() : [];
+  }
+
+  Future<int> updateStudent(Student student) async {
+    final Database db = await database;
+    //con updates, se usa el nombre de la tabla, seguido de los valores en formato de Mapa, seguido del where con parametros posicionales y los argumentos finales
+    final res = await db
+        .update('students', student.toJson(), where: 'id = ?', whereArgs: [student.id]);
+    return res;
+  }
+
+  Future<int> deleteStudent(int id) async {
+    final Database db = await database;
+    final int res = await db.delete('students', where: 'id = ?', whereArgs: [id]);
+    return res;
+  }
+
+  Future<int> deleteAllStudents() async {
+    final Database db = await database;
+    final res = await db.rawDelete('''
+      DELETE FROM students    
     ''');
     return res;
   }
