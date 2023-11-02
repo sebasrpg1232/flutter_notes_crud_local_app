@@ -30,11 +30,11 @@ class CustomNavigatorBar extends StatelessWidget {
       },
       //Items
       items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(backgroundColor: Colors.red, icon: Icon(Icons.list), label: "Listar Notas"),
-        BottomNavigationBarItem(backgroundColor: Colors.red,
+        BottomNavigationBarItem(backgroundColor: Colors.green, icon: Icon(Icons.list), label: "Listar Notas"),
+        BottomNavigationBarItem(backgroundColor: Colors.green,
             icon: Icon(Icons.post_add_rounded), label: "Crear Nota"),
-        BottomNavigationBarItem(backgroundColor: Colors.red,icon: Icon(Icons.list), label: "Listar Estudiantes"),
-        BottomNavigationBarItem(backgroundColor: Colors.red,
+        BottomNavigationBarItem(backgroundColor: Colors.green,icon: Icon(Icons.list), label: "Listar Estudiantes"),
+        BottomNavigationBarItem(backgroundColor: Colors.green,
             icon: Icon(Icons.post_add_rounded), label: "Crear Estudiante")
       ],
 

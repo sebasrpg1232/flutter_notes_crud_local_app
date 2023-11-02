@@ -73,7 +73,7 @@ class _CreateForm extends StatelessWidget {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             disabledColor: Colors.grey,
             elevation: 0,
-            color: Colors.deepPurple,
+            color: Colors.green,
             onPressed: studentsProvider.isLoading
                 ? null
                 : () {

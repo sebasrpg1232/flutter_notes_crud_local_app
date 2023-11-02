@@ -18,7 +18,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Center(child: Text("Home Final")),
+          title: const Center(child: Text("Cuanto quedo el manchester?")),
+          backgroundColor: Colors.green,
         ),
         body: _HomeScreenBody(),
         bottomNavigationBar: const CustomNavigatorBar());

@@ -75,8 +75,16 @@ class _ListStudents extends StatelessWidget {
             displayDialog(context, studentsProvider, students[index].id!);
           },
           itemBuilder: (context) => [
-            const PopupMenuItem(value: 0, child: Text('Actualizar')),
-            const PopupMenuItem(value: 1, child: Text('Eliminar'))
+            const PopupMenuItem(value: 0, child: Icon(
+          Icons.edit,
+          color: Colors.green,
+          size: 32.0,
+        ),),
+            const PopupMenuItem(value: 1, child: Icon(
+              Icons.delete,
+              color: Colors.green,
+              size: 32.0,
+            ),)
           ],
         ),
       ),

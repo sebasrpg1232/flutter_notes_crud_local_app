@@ -45,7 +45,7 @@ class _CreateForm extends StatelessWidget {
             initialValue: notesProvider.description,
             // keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
-              hintText: 'Aprender sobre Dart...',
+              hintText: 'DAME TIEMPO QUE NO ESTOY EN MI MEJOR MOMENTO',
               labelText: 'Descripción',
             ),
             onChanged: (value) => notesProvider.description = value,
@@ -59,7 +59,7 @@ class _CreateForm extends StatelessWidget {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             disabledColor: Colors.grey,
             elevation: 0,
-            color: Colors.deepPurple,
+            color: Colors.green,
             onPressed: notesProvider.isLoading
                 ? null
                 : () {
