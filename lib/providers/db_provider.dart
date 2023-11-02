@@ -27,7 +27,7 @@ class DBProvider {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
 
     //Armamos la url donde quedará la base de datos
-    final path = join(documentsDirectory.path, 'StudentsDB.db');
+    final path = join(documentsDirectory.path, 'StudentDB.db');
 
     //Imprimos ruta
     print(path);
@@ -37,21 +37,9 @@ class DBProvider {
       version: 1,
       onOpen: (db) => {},
       onCreate: (db, version) async {
-        await db.execute('''
+        await db.execute(" CREATE TABLE students(id INTEGER PRIMARY KEY, name text, age int )");
+        await db.execute("  CREATE TABLE notes(id INTEGER PRIMARY KEY, title TEXT, description TEXT)");
 
-        CREATE TABLE notes(
-          id INTEGER PRIMARY KEY,
-          title TEXT,
-          description TEXT
-        );
-        
-        Create Table students(
-        id int primary key,
-        name text,
-        age int
-        );
-
-''');
       },
     );
   }
@@ -132,7 +120,7 @@ class DBProvider {
 
     final int res = await db.rawInsert('''
 
-      INSERT INTO notes (id, title, description) VALUES ($id, "$name", "$age")
+      INSERT INTO students (id, title, description) VALUES ($id, "$name", "$age")
 
 ''');
     print(res);
@@ -161,6 +149,8 @@ class DBProvider {
   Future<List<Student>> getAllStudents() async {
     final Database? db = await database;
     final res = await db!.query('students');
+    print(res);
+    print("adios");
     //Transformamos con la funcion map instancias de nuestro modelo. Si no existen registros, devolvemos una lista vacia
     return res.isNotEmpty ? res.map((n) => Student.fromJson(n)).toList() : [];
   }

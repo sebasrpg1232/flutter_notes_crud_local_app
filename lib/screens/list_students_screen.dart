@@ -9,6 +9,7 @@ class ListStudentsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("hola");
     return _ListStudents();
   }
 }
@@ -50,15 +51,16 @@ class _ListStudents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StudentsProvider studentsProvider = Provider.of<StudentsProvider>(context);
-
+    print(studentsProvider.students);
+    print("hola");
     final students = studentsProvider.students;
 
     return ListView.builder(
       itemCount: students.length,
       itemBuilder: (_, index) => ListTile(
-        leading: const Icon(Icons.note),
-        title: Text(students[index].name),
-        subtitle: Text(students[index].id.toString()),
+        title: Text("Nombre   "+students[index].name),
+        subtitle: Text("Id     "+students[index].id.toString()+"\nEdad     "+students[index].age.toString()),
+
         trailing: PopupMenuButton(
           // icon: Icon(Icons.fire_extinguisher),
           onSelected: (int i) {
@@ -66,7 +68,7 @@ class _ListStudents extends StatelessWidget {
               studentsProvider.createOrUpdate = "update";
               studentsProvider.assignDataWithStudent(students[index]);
               Provider.of<ActualOptionProvider>(context, listen: false)
-                  .selectedOption = 1;
+                  .selectedOption = 3;
               return;
             }
 

@@ -89,8 +89,7 @@ class _CreateForm extends StatelessWidget {
               }
               studentsProvider.resetStudentData();
               studentsProvider.isLoading = false;
-              actualOptionProvider.selectedOption = 0;
-              /*cambiar 0 quizas*/
+              actualOptionProvider.selectedOption = 2;
             },
             child: Container(
                 padding:

@@ -16,6 +16,7 @@ class CustomNavigatorBar extends StatelessWidget {
     final currentIndex = actualOptionProvider.selectedOption;
 
     return BottomNavigationBar(
+
       //Current Index, para determinar el botón que debe marcarse
       currentIndex: currentIndex,
       onTap: (int i) {
@@ -29,13 +30,14 @@ class CustomNavigatorBar extends StatelessWidget {
       },
       //Items
       items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.list), label: "Listar Notas"),
-        BottomNavigationBarItem(
+        BottomNavigationBarItem(backgroundColor: Colors.red, icon: Icon(Icons.list), label: "Listar Notas"),
+        BottomNavigationBarItem(backgroundColor: Colors.red,
             icon: Icon(Icons.post_add_rounded), label: "Crear Nota"),
-        BottomNavigationBarItem(icon: Icon(Icons.list), label: "Listar Estudiantes"),
-        BottomNavigationBarItem(
+        BottomNavigationBarItem(backgroundColor: Colors.red,icon: Icon(Icons.list), label: "Listar Estudiantes"),
+        BottomNavigationBarItem(backgroundColor: Colors.red,
             icon: Icon(Icons.post_add_rounded), label: "Crear Estudiante")
       ],
+
     );
   }
 }
